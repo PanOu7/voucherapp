@@ -1,0 +1,234 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "product_name": "Web Hosting Package",
+      "price": "1000",
+      "created_at": "2024-09-18 00:00:00"
+    },
+    {
+      "id": "2",
+      "product_name": "Custom Website Design",
+      "price": "5000",
+      "created_at": "2024-09-18 00:30:00"
+    },
+    {
+      "id": "3",
+      "product_name": "SEO Optimization Service",
+      "price": "1500",
+      "created_at": "2024-09-18 01:00:00"
+    },
+    {
+      "id": "4",
+      "product_name": "E-commerce Integration",
+      "price": "7000",
+      "created_at": "2024-09-18 01:30:00"
+    },
+    {
+      "id": "5",
+      "product_name": "API Development",
+      "price": "3000",
+      "created_at": "2024-09-18 02:00:00"
+    },
+    {
+      "id": "6",
+      "product_name": "Website Maintenance Package",
+      "price": "1200",
+      "created_at": "2024-09-18 02:30:00"
+    },
+    {
+      "id": "7",
+      "product_name": "UI/UX Design",
+      "price": "4000",
+      "created_at": "2024-09-18 03:00:00"
+    },
+    {
+      "id": "8",
+      "product_name": "Content Management System Setup",
+      "price": "2500",
+      "created_at": "2024-09-18 03:30:00"
+    },
+    {
+      "id": "9",
+      "product_name": "Performance Optimization",
+      "price": "2000",
+      "created_at": "2024-09-18 04:00:00"
+    },
+    {
+      "id": "10",
+      "product_name": "Website Security Package",
+      "price": "1800",
+      "created_at": "2024-09-18 04:30:00"
+    }
+  ],
+  "vouchers": [
+    {
+      "id": "e904",
+      "voucher_id": "INV-241001-2784",
+      "customer_name": "Mg Mg",
+      "customer_email": "mg@gmail.com",
+      "sale_date": "2024-10-01",
+      "all_correct": "true",
+      "records": [
+        {
+          "id": 1727770212311,
+          "product": {
+            "id": "1",
+            "product_name": "Web Hosting Package",
+            "price": "1000",
+            "created_at": "2024-09-18 00:00:00"
+          },
+          "quantity": "2",
+          "cost": 2000,
+          "created_at": "2024-10-01T08:10:12.311Z"
+        }
+      ],
+      "total": 2000,
+      "tax": 100,
+      "netTotal": 2100
+    },
+    {
+      "id": "e5c1",
+      "voucher_id": "INV-241001-1813",
+      "customer_name": "Su Su",
+      "customer_email": "su@gmail.com",
+      "sale_date": "2024-10-01",
+      "all_correct": "true",
+      "records": [
+        {
+          "id": 1727770993805,
+          "product": {
+            "id": "7",
+            "product_name": "UI/UX Design",
+            "price": "4000",
+            "created_at": "2024-09-18 03:00:00"
+          },
+          "quantity": "2",
+          "cost": 8000,
+          "created_at": "2024-10-01T08:23:13.805Z"
+        },
+        {
+          "id": 1727771003652,
+          "product": {
+            "id": "4",
+            "product_name": "E-commerce Integration",
+            "price": "7000",
+            "created_at": "2024-09-18 01:30:00"
+          },
+          "quantity": "1",
+          "cost": 7000,
+          "created_at": "2024-10-01T08:23:23.652Z"
+        }
+      ],
+      "total": 15000,
+      "tax": 750,
+      "netTotal": 15750
+    },
+    {
+      "id": "22a1",
+      "voucher_id": "INV-241003-9668",
+      "customer_name": "Zaw Zaw",
+      "customer_email": "zaw@gmail.com",
+      "sale_date": "2024-10-03",
+      "all_correct": [
+        "true",
+        "true"
+      ],
+      "redirect-voucher": "true",
+      "records": [
+        {
+          "id": 1727959573923,
+          "product": {
+            "id": "5",
+            "product_name": "API Development",
+            "price": "3000",
+            "created_at": "2024-09-18 02:00:00"
+          },
+          "quantity": "4",
+          "cost": 12000,
+          "created_at": "2024-10-03T12:46:13.923Z"
+        }
+      ],
+      "total": 12000,
+      "tax": 600,
+      "netTotal": 12600
+    },
+    {
+      "id": "09a3",
+      "voucher_id": "INV-241004-3170",
+      "customer_name": "Mg Mg",
+      "customer_email": "mg@gmail.com",
+      "sale_date": "2024-10-04",
+      "redirect_voucher": "true",
+      "all_correct": "true",
+      "records": [],
+      "total": 0,
+      "tax": 0,
+      "netTotal": 0
+    },
+    {
+      "id": "9e54",
+      "voucher_id": "INV-241004-7521",
+      "customer_name": "Mg Mg",
+      "customer_email": "mg@gmail.com",
+      "sale_date": "2024-10-04",
+      "redirect_voucher": "true",
+      "all_correct": "true",
+      "records": [],
+      "total": 0,
+      "tax": 0,
+      "netTotal": 0
+    },
+    {
+      "id": "c580",
+      "voucher_id": "INV-241004-4651",
+      "customer_name": "Su Su",
+      "customer_email": "su@gmail.com",
+      "sale_date": "2024-10-04",
+      "redirect_voucher": "true",
+      "all_correct": "true",
+      "records": [],
+      "total": 0,
+      "tax": 0,
+      "netTotal": 0
+    },
+    {
+      "id": "c0f6",
+      "voucher_id": "INV-241004-8435",
+      "customer_name": "Mg Mg",
+      "customer_email": "mg@gmail.com",
+      "sale_date": "2024-10-04",
+      "redirect_voucher": "true",
+      "all_correct": "true",
+      "records": [
+        {
+          "id": 1728032081163,
+          "product": {
+            "id": "3",
+            "product_name": "SEO Optimization Service",
+            "price": "1500",
+            "created_at": "2024-09-18 01:00:00"
+          },
+          "quantity": "4",
+          "cost": 6000,
+          "created_at": "2024-10-04T08:54:41.163Z"
+        },
+        {
+          "id": 1728032091179,
+          "product": {
+            "id": "4",
+            "product_name": "E-commerce Integration",
+            "price": "7000",
+            "created_at": "2024-09-18 01:30:00"
+          },
+          "quantity": "3",
+          "cost": 21000,
+          "created_at": "2024-10-04T08:54:51.179Z"
+        }
+      ],
+      "total": 27000,
+      "tax": 1350,
+      "netTotal": 28350
+    }
+  ]
+}
