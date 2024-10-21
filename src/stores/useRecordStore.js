@@ -16,7 +16,7 @@ const useRecordStore = create((set) => ({
     set((state) => ({
       records: state.records.map((record) =>
        {
-        if (record.id === id) {
+        if (record.product_id === id) {
             const newQuantity = parseInt(record.quantity) + parseInt(quantity);
             const newCost = record.product.price * newQuantity;
           return { ...record, quantity: newQuantity,cost:newCost };

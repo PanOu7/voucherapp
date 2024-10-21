@@ -1,55 +1,62 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { orbit } from 'ldrs'
+import { orbit } from "ldrs";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import ProductEditSkeleton from "./ProductEditSkeleton";
 
-orbit.register()
+orbit.register();
 
 // Default values shown
 
-const fetcher=(url)=>fetch(url).then((res)=>res.json());
+const fetcher = (url) => fetch(url).then((res) => res.json());
 const ProductEditCard = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-    const {
-      register,
-      formState: { errors },
-      handleSubmit,
-    } = useForm();
+  const { id } = useParams();
 
+  const { data, isLoading, error } = useSWR(
+    import.meta.env.VITE_API_URL + "/products/" + id,
+    fetcher
+  );
 
-     const {id}=useParams();
+  const [isSending, setIsSending] = useState(false);
 
-     const {data,isLoading,error} =useSWR(import.meta.env.VITE_API_URL+"/products/"+id,fetcher);
+  const navigate = useNavigate();
 
-    const [isSending,setIsSending] = useState(false);
-
-    const navigate=useNavigate();
-
-    const handleCreateProduct=async(data)=>{
-      setIsSending(true);
-      // //  data.created_at=new Date().toISOString();    
-      await fetch(import.meta.env.VITE_API_URL + "/products/"+id, {
-        method: "PUT",
-        body: JSON.stringify({
-          product_name: data.product_name,
-          price: data.price,
-          created_at: new Date().toISOString(),
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setIsSending(false);
-      if(data.back_to_product_list){
-       navigate("/product")
-      }
-      toast.success("Product Update Successfully");
-     console.log(data);
-    
+  const handleUpdateProduct = async (data) => {
+    setIsSending(true);
+    // //  data.created_at=new Date().toISOString();
+    await fetch(import.meta.env.VITE_API_URL + "/products/" + id, {
+      method: "PUT",
+      body: JSON.stringify({
+        product_name: data.product_name,
+        price: data.price,
+        created_at: new Date().toISOString(),
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    setIsSending(false);
+    if (data.back_to_product_list) {
+      navigate("/product");
     }
+    toast.success("Product Update Successfully");
+    console.log(data);
+  };
+
+  //!For use SWR Retch Data
+  // if (isLoading) return <p>lOADING ..</p>;
+
+  // console.log(data);
+
+
   return (
     <div className=" rounded-lg p-5 w-full md:w-1/2">
       <h1 className="text-gray-700 text-xl font-bold">Edit Product</h1>
@@ -61,7 +68,7 @@ const ProductEditCard = () => {
       {isLoading ? (
         <ProductEditSkeleton />
       ) : (
-        <form onSubmit={handleSubmit(handleCreateProduct)}>
+        <form onSubmit={handleSubmit(handleUpdateProduct)}>
           <div className="mb-5">
             <label
               htmlFor="first_name"
@@ -77,7 +84,7 @@ const ProductEditCard = () => {
                 minLength: 3,
                 maxLength: 40,
               })}
-              defaultValue={data.product_name}
+              defaultValue={data?.data?.product_name}
               type="text"
               className={`bg-gray-50 border font-semibold ${
                 errors.product_name
@@ -119,7 +126,7 @@ const ProductEditCard = () => {
                 min: 1000,
                 max: 10000,
               })}
-              defaultValue={data.price}
+              defaultValue={data?.data?.price}
               type="number"
               className="bg-gray-50 border  font-semibold  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="eg.1000$"
@@ -199,4 +206,4 @@ const ProductEditCard = () => {
   );
 };
 
-export default ProductEditCard; 
+export default ProductEditCard;

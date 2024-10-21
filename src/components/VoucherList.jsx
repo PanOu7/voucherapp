@@ -9,32 +9,48 @@ import VoucherListRow from "./VoucherListRow";
 import VoucherListEmptyStage from "./VoucherListEmptyStage";
 import { debounce } from 'lodash'
 import { MdOutlineClear } from "react-icons/md";
+import Pagination from "./Pagination";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const VoucherList = () => {
-  const [voucherSearch,setVoucherSearch] = useState("")
+  // const [voucherSearch,setVoucherSearch] = useState("")
+  const [fetchUrl,setFetchUrl]=useState(`${import.meta.env.VITE_API_URL}/vouchers`)
 
   const voucherInput=useRef();
 
   const { data, isLoading, error } = useSWR(
-    voucherSearch
-      ? `${
-          import.meta.env.VITE_API_URL
-        }/vouchers?voucher_id_like=${voucherSearch}`
-      : `${import.meta.env.VITE_API_URL}/vouchers`,
+    // voucherSearch
+    //   ? `${
+    //       import.meta.env.VITE_API_URL
+    //     }/vouchers?voucher_id_like=${voucherSearch}`
+    //   : `${import.meta.env.VITE_API_URL}/vouchers`,
+    fetchUrl,
     fetcher
   );
 
   const handleVoucherSearch=debounce((e)=>{
-    setVoucherSearch(e.target.value);
+    // setVoucherSearch(e.target.value);
+    setFetchUrl(`${import.meta.env.VITE_API_URL}/vouchers?q=${e.target.value}`)
   },500)
 
 
   const handleVoucherClearSearch=()=>{
-    setVoucherSearch('');
+    // setVoucherSearch('');
     voucherInput.current.value='';
   }
+
+  const updateFetchUrl=(url)=>{
+    setFetchUrl(url)
+  }
+
+  // if(isLoading){
+  //   return (
+  //     <p>Loading----</p>
+  //   )
+  // }
+  // console.log(data);
+
   return (
     <>
       <div className="flex justify-between items-center mb-3 ">
@@ -44,13 +60,13 @@ const VoucherList = () => {
               <HiSearch className="text-gray-500 dark:text-gray-400" />
             </div>
             <input
-            ref={voucherInput}
+              ref={voucherInput}
               onChange={handleVoucherSearch}
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Voucher "
             />
-            {voucherSearch && (
+            {/* {voucherSearch && (
               <button
                 className="absolute right-2 top-0 bottom-0 cursor-pointer m-auto"
                 onClick={handleVoucherClearSearch}
@@ -60,7 +76,7 @@ const VoucherList = () => {
                   className="active:scale-90 duration-200"
                 />
               </button>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -100,12 +116,19 @@ const VoucherList = () => {
           <tbody>
             <VoucherListEmptyStage />
             {!isLoading &&
-              data?.map((voucher, index) => (
-                <VoucherListRow key={index} voucher={voucher} />
+              data?.data?.map((voucher, index) => (
+                <VoucherListRow key={voucher.id} voucher={voucher} />
               ))}
           </tbody>
         </table>
       </div>
+      {!isLoading && (
+        <Pagination
+          links={data?.links}
+          meta={data?.meta}
+          updateFetchUrl={updateFetchUrl}
+        />
+      )}
     </>
   );
 };

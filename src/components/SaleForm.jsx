@@ -7,7 +7,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const SaleForm = () => {
   const { data, isLoading } = useSWR(
-    import.meta.env.VITE_API_URL + "/products",
+    import.meta.env.VITE_API_URL + "/products?limit=100",
     fetcher
   );
 
@@ -27,11 +27,12 @@ const SaleForm = () => {
       ({ product: { id } }) => currentProductId === id
     );
      if(isExited){
-     changeQuantity(isExited.id, data.quantity);
+     changeQuantity(isExited.product_id, data.quantity);
      }else{
         addRecord({
-          id: Date.now(),
+          // id: Date.now(),
           product: currentProduct,
+          product_id:currentProduct.id,
           quantity: data.quantity,
           cost: currentProduct.price * data.quantity,
           created_at: new Date().toISOString(),
@@ -58,7 +59,7 @@ const SaleForm = () => {
             >
               <option value="">Select a product</option>
               {!isLoading &&
-                data.map((product) => (
+                data.data.map((product) => (
                   <option key={product.id} value={JSON.stringify(product)}>
                     {product.product_name}
                   </option>

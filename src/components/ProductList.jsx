@@ -1,38 +1,38 @@
 import React, { useRef, useState } from "react";
-import {
-  HiPlus,
-  HiSearch,
-} from "react-icons/hi";
+import { HiPlus, HiSearch } from "react-icons/hi";
 import useSWR from "swr";
 import ProduckListSkeletonLoader from "./ProduckListSkeletonLoader";
 import ProductListEmptyStage from "./ProductListEmptyStage";
 import ProductRow from "./ProductRow";
 import { Link } from "react-router-dom";
 //import {throttle} from 'lodash'
-import {debounce} from 'lodash'
+import { debounce } from "lodash";
 import { MdOutlineClear } from "react-icons/md";
+import Pagination from "./Pagination";
 
-
-const fetcher=(url)=>fetch(url).then((res)=>res.json())
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const ProductList = () => {
   const [search, setSearch] = useState("");
 
-  const searchInput=useRef();
+  const [fetchUrl, setFetchUrl] = useState(
+    import.meta.env.VITE_API_URL + "/products"
+  );
+
+  const searchInput = useRef();
   // console.log(search);
 
   // console.log(import.meta.env.VITE_API_URL);
 
   const { data, isLoading, error } = useSWR(
-    search
-      ? `${import.meta.env.VITE_API_URL}/products?product_name_like=${search}`
-      : `${import.meta.env.VITE_API_URL}/products`, // Fixed URL construction
+    fetchUrl, // Fixed URL construction
     fetcher
   );
 
-  // if(isLoading){
-  //   return <p>Loading...</p>
-  // }
+  //   if(isLoading){
+  //     return <p>Loading...</p>
+  //   }
+  // console.log(data);
 
   //   const handleProductSearch=(e)=>{
   // setSearch(e.target.value);
@@ -43,15 +43,19 @@ const ProductList = () => {
   //   console.log(e.target.value);
   // },500)
 
-  const handleProductSearch=debounce((e)=>{
+  const handleProductSearch = debounce((e) => {
     setSearch(e.target.value);
-  },500);
+    setFetchUrl(`${import.meta.env.VITE_API_URL}/products?q=${e.target.value}`);
+  }, 500);
 
+  const handleClearSearch = () => {
+    setSearch("");
+    searchInput.current.value = "";
+  };
 
-  const handleClearSearch=()=>{
-    setSearch('');
-    searchInput.current.value='';
-  }
+  const updateFetchUrl = (url) => {
+    setFetchUrl(url);
+  };
 
   return (
     <>
@@ -62,13 +66,23 @@ const ProductList = () => {
               <HiSearch className="text-gray-500 dark:text-gray-400" />
             </div>
             <input
-            ref={searchInput}
+              ref={searchInput}
               onChange={handleProductSearch}
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Product "
             />
-            {search && <button className="absolute right-2 top-0 bottom-0 cursor-pointer m-auto"  onClick={handleClearSearch}><MdOutlineClear fill="red" className="active:scale-90 duration-200"/></button>}
+            {search && (
+              <button
+                className="absolute right-2 top-0 bottom-0 cursor-pointer m-auto"
+                onClick={handleClearSearch}
+              >
+                <MdOutlineClear
+                  fill="red"
+                  className="active:scale-90 duration-200"
+                />
+              </button>
+            )}
           </div>
         </div>
 
@@ -82,7 +96,7 @@ const ProductList = () => {
           </Link>
         </div>
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mb-5">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -99,6 +113,9 @@ const ProductList = () => {
               <th scope="col" className="px-6 py-3 text-end">
                 Created At
               </th>
+              <th scope="col" className="px-6 py-3 text-end">
+                Updated At
+              </th>
 
               <th scope="col" className="px-6 py-3 text-end">
                 Action
@@ -108,16 +125,19 @@ const ProductList = () => {
           <tbody>
             {isLoading ? (
               <ProduckListSkeletonLoader />
-            ) : data.length === 0 ? (
+            ) : data?.data?.length === 0 ? (
               <ProductListEmptyStage />
             ) : (
-              data.map((product) => (
+              data?.data?.map((product) => (
                 <ProductRow product={product} key={product.id} />
               ))
             )}
           </tbody>
         </table>
       </div>
+      {!isLoading  && (
+        <Pagination links={data?.links} meta={data?.meta} updateFetchUrl={updateFetchUrl} />
+      )}
     </>
   );
 };

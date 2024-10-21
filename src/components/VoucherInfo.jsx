@@ -24,27 +24,35 @@ const VoucherInfo = () => {
     setIsSending(true);
     const total = records.reduce((a, b) => a + b.cost, 0);
     const tax = total * 0.05;
-    const netTotal = total + tax;
-    const currentVoucher = { ...data, records, total, tax, netTotal };
+    const net_total = total + tax;
+
+    const currentVoucher = { ...data, records, total, tax, net_total };
+    console.log(currentVoucher);
 
     const res = await fetch(import.meta.env.VITE_API_URL + "/vouchers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json",
       },
       body: JSON.stringify(currentVoucher),
     });
+    // console.log(res);
 
     const json = await res.json();
 
-    toast.success("Voucher Created Successfully");
-    resetRecords();
-    reset();
-    setIsSending(false);
-    if (data.redirect_voucher) {
-      navigate(`/voucher_detail/${json.id}`);
+    if (res.status === 201) {
+      toast.success("Voucher Created Successfully");
+      resetRecords();
+      reset();
+      setIsSending(false);
+      if (data.redirect_voucher) {
+        navigate(`/voucher_detail/${json.id}`);
+      }
+    }else{
+      toast.error(json.message);
     }
-  };
+  }
 
   function generateInvoiceNumber() {
     const date = new Date();
@@ -230,13 +238,13 @@ const VoucherInfo = () => {
                 Redirect to Voucher Detail
               </label>
               <input
-                required
+              
                 form="infoForm"
                 {...register("redirect_voucher")}
                 id="redirect_voucher"
                 type="checkbox"
                 defaultValue
-                className="w-4 h-4 bg-emerald-700 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                className="w-4 h-4 bg-emerald-700  border-gray-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div className="flex  items-center ">

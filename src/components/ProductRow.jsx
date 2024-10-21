@@ -12,19 +12,25 @@ lineSpinner.register();
 
 // Default values shown
 
-const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
+const ProductRow = ({ product: { id, product_name, price, created_at,updated_at } }) => {
   const { mutate } = useSWRConfig();
   const [isDelete, setIsDelete] = useState(false);
 
   const handleDeleteBtn = async () => {
     setIsDelete(true);
-    await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
+   const res= await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
       method: "DELETE",
     });
-    toast.success("Product Deleted Successfully");
-    mutate(import.meta.env.VITE_API_URL + `/products`);
+      const json = await res.json();
 
-    console.log(id);
+   if(res.status===200){
+       toast.success(json.message);
+     mutate(import.meta.env.VITE_API_URL + `/products`);
+   }else{
+     toast.error(json.message);
+   }
+
+    // console.log(id);
   };
 
   return (
@@ -40,6 +46,9 @@ const ProductRow = ({ product: { id, product_name, price, created_at } }) => {
       <td className="px-6 py-4 text-end">{price} $</td>
       <td className="px-6 py-4 text-end">
         <ShowDate timestamp={created_at} />
+      </td>
+      <td className="px-6 py-4 text-end">
+        <ShowDate timestamp={updated_at} />
       </td>
       <td className="px-6 py-4 text-end">
         <div className="inline-flex rounded-md shadow-sm " role="group">

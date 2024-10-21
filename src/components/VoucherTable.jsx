@@ -7,7 +7,8 @@ const VoucherTable = () => {
 
   const total = records.reduce((a, b) => a + b.cost, 0);
   const tax = total * 0.05;
-  const netTotal=total+tax;
+  const net_total = total + tax;
+  
  return (
    <div className="relative shadow-md sm:rounded-lg overflow-hidden ">
      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
@@ -42,7 +43,7 @@ const VoucherTable = () => {
            </tr>
          )}
          {records.map((record, index) => (
-           <VoucherTableRow key={record.id} record={record} index={index} />
+           <VoucherTableRow key={record.product.id} record={record} index={index} />
          ))}
        </tbody>
        <tfoot>
@@ -64,7 +65,7 @@ const VoucherTable = () => {
            <td className="px-6 py-4 text-end" colSpan={4}>
              Net Total (MMK)
            </td>
-           <td className="px-6 py-4 text-end">{netTotal.toFixed(2)}</td>
+           <td className="px-6 py-4 text-end">{net_total.toFixed(2)}</td>
            <td className="px-6 py-4 text-end"> </td>
          </tr>
        </tfoot>

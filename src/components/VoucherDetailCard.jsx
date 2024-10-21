@@ -66,14 +66,14 @@ const handleDowloadPdf = () => {
           <div className="flex justify-between items-start mb-8">
             <div>
               <h1 className="text-lg text-black font-bold mb-2">INVOICE</h1>
-              <p className=" text-black text-xs">{data.voucher_id}</p>
+              <p className=" text-black text-xs">{data?.data?.voucher_id}</p>
             </div>
             <div className="text-right">
               <p className="font-bold text-black">Invoice to</p>
               <p className="py-2 px-5 text-sm text-black">
-                {data.customer_name}
+                {data?.data?.customer_name}
               </p>
-              <p className=" text-xs text-black">Date: {data.sale_date}</p>
+              <p className=" text-xs text-black">Date: {data?.data?.sale_date}</p>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ const handleDowloadPdf = () => {
             </tr>
           </thead>
           <tbody>
-            {data.records.map((record, index) => (
+            {data.data.records.map((record, index) => (
               <tr key={record.id}>
                 <td className="py-2 px-5 text-sm text-black">{index + 1}</td>
                 <td className="py-2 px-5 text-sm text-black">
@@ -113,7 +113,7 @@ const handleDowloadPdf = () => {
                 Total
               </td>
               <td className="py-2 px-4 text-sm text-black">
-                {data.total.toFixed(2)}$
+                {parseFloat(data.data.total).toFixed(2)}$
               </td>
             </tr>
             <tr className="border-b border-gray-300">
@@ -124,7 +124,7 @@ const handleDowloadPdf = () => {
                 Tax
               </td>
               <td className="py-2 px-4 text-sm text-black">
-                {data.tax.toFixed(2)}$
+                {parseFloat(data.data.tax).toFixed(2)}$
               </td>
             </tr>
             <tr className="border-b border-gray-300">
@@ -135,7 +135,7 @@ const handleDowloadPdf = () => {
                 Net Total
               </td>
               <td className="py-2 px-4 text-sm text-black">
-                {data.netTotal.toFixed(2)}$
+                {parseFloat(data.data.netTotal).toFixed(2)}$
               </td>
             </tr>
           </tfoot>
