@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { orbit } from 'ldrs'
 import toast from "react-hot-toast";
+import useCookie from "react-use-cookie";
 
 orbit.register()
 
@@ -17,6 +18,8 @@ const ProductCreateCard = () => {
       reset,
       handleSubmit,
     } = useForm();
+
+    const [token]=useCookie("my_token");
 
     const [isSending,setIsSending] = useState(false);
     const navigate=useNavigate();
@@ -33,12 +36,13 @@ const ProductCreateCard = () => {
         }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       setIsSending(false);
       reset();
       if(data.back_to_product_list){
-       navigate("/product")
+       navigate("/dashboard/product")
       }
       toast.success("Product Created Successfully");
     // console.log(data);
@@ -105,8 +109,8 @@ const ProductCreateCard = () => {
           <input
             {...register("price", {
               required: true,
-              min: 1000,
-              max: 10000,
+              min: 100,
+              max: 1000,
             })}
             type="number"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

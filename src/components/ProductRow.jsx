@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ShowDate from "./ShowDate";
 import { lineSpinner } from "ldrs";
 import toast from "react-hot-toast";
+import useCookie from "react-use-cookie";
 
 lineSpinner.register();
 
@@ -16,10 +17,16 @@ const ProductRow = ({ product: { id, product_name, price, created_at,updated_at 
   const { mutate } = useSWRConfig();
   const [isDelete, setIsDelete] = useState(false);
 
+  const [token]=useCookie("my_token");
+
   const handleDeleteBtn = async () => {
     setIsDelete(true);
    const res= await fetch(import.meta.env.VITE_API_URL + `/products/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
     });
       const json = await res.json();
 
@@ -53,7 +60,7 @@ const ProductRow = ({ product: { id, product_name, price, created_at,updated_at 
       <td className="px-6 py-4 text-end">
         <div className="inline-flex rounded-md shadow-sm " role="group">
           <Link
-            to={`/product-edit/${id}`}
+            to={`/dashboard/product-edit/${id}`}
             className="size-10 flex justify-center items-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
           >
             <HiOutlinePencil />

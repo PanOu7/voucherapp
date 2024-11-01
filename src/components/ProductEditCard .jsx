@@ -5,6 +5,7 @@ import { orbit } from "ldrs";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import ProductEditSkeleton from "./ProductEditSkeleton";
+import useCookie  from "react-use-cookie";
 
 orbit.register();
 
@@ -12,6 +13,7 @@ orbit.register();
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const ProductEditCard = () => {
+    const [token] = useCookie("my_token");
   const {
     register,
     formState: { errors },
@@ -24,6 +26,7 @@ const ProductEditCard = () => {
     import.meta.env.VITE_API_URL + "/products/" + id,
     fetcher
   );
+
 
   const [isSending, setIsSending] = useState(false);
 
@@ -41,6 +44,7 @@ const ProductEditCard = () => {
       }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     setIsSending(false);
@@ -123,8 +127,8 @@ const ProductEditCard = () => {
             <input
               {...register("price", {
                 required: true,
-                min: 1000,
-                max: 10000,
+                min: 100,
+                max: 1000,
               })}
               defaultValue={data?.data?.price}
               type="number"
